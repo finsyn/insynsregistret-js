@@ -1,0 +1,20 @@
+{
+  "name": "insynsregistret",
+  "version": "0.0.0",
+  "description": "Get the latest insider transactions published at FinansInspektionen",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap *.spec.js"
+  },
+  "author": "tornilssonohrn@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "csv-parse": "~1.2.2",
+    "http": "0.0.0",
+    "querystring": "~0.2.0",
+    "ramda": "~0.24.1"
+  },
+  "devDependencies": {
+    "tap": "~10.7.0"
+  }
+}
