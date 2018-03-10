@@ -2,12 +2,13 @@ const qs = require('querystring');
 const https = require('https');
 const parse = require('csv-parse');
 
-function getEntries (date) {
+// (String, [String]) -> Promise(Object[])
+function getEntries (from, to=null) {
 
   const params = {
     SearchFunctionType: 'Insyn',
-    'Publiceringsdatum.From': date,
-    'Publiceringsdatum.To': date,
+    'Publiceringsdatum.From': from,
+    'Publiceringsdatum.To': to || from,
     button: 'export',
     Page: '1' // apparently this needs to be specified since 24th of March 2017
   };

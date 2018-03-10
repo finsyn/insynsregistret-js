@@ -42,5 +42,11 @@ ir('2017-01-10')
 //     status: 'Aktuell' },
 //     ...
 // ]
+
+// get transactions published between two dates
+ir('2017-01-01', '2017-01-10')
+.then(console.log)
+
+
 ```
     
