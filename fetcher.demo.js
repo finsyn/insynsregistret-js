@@ -1,4 +1,4 @@
 const { getEntries } = require('./fetcher')
 
-getEntries('2017-09-10', '2017-09-15')
+getEntries('2018-09-19', '2018-09-19')
 .then(console.log)

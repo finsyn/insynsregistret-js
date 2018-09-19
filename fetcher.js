@@ -49,7 +49,7 @@ function parseEntries (data) {
     .map(vals => vals.map(emptyToNull))
     .map(vals => vals.map(seToBool))
     .map(([
-      published_at,
+      published_at, // 0
       publisher,
       lei,
       responsible,
@@ -61,6 +61,7 @@ function parseEntries (data) {
       first_report,
       shares_program_connection, // 10
       transaction_type,
+      instrument_type,
       instrument,
       isin,
       created_at,
@@ -84,6 +85,7 @@ function parseEntries (data) {
       first_report,
       shares_program_connection,
       transaction_type,
+      instrument_type,
       instrument,
       isin,
       volume_unit,
