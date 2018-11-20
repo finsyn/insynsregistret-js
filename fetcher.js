@@ -47,7 +47,6 @@ function parseEntries (data) {
   
   return data.slice(1)
     .map(vals => vals.map(emptyToNull))
-    .map(vals => vals.map(seToBool))
     .map(([
       published_at, // 0
       publisher,
@@ -78,12 +77,12 @@ function parseEntries (data) {
       responsible,
       person,
       title,
-      relative,
+      relative: seToBool(relative),
       created_at: (created_at) ? new Date(created_at).toISOString() : null,
-      correction,
+      correction: seToBool(correction),
       correction_reason,
-      first_report,
-      shares_program_connection,
+      first_report: seToBool(first_report),
+      shares_program_connection: seToBool(shares_program_connection),
       transaction_type,
       instrument_type,
       instrument,
