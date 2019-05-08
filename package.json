@@ -1,6 +1,6 @@
 {
   "name": "insynsregistret",
-  "version": "0.2.1",
+  "version": "0.2.2-0",
   "description": "Get the latest insider transactions published at FinansInspektionen",
   "main": "index.js",
   "scripts": {
