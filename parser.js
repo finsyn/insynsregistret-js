@@ -4,7 +4,7 @@ const stream = require('stream')
 const transform = require('stream-transform')
 const { constructN, evolve, prop, __, pipe, toLower, tap,
         map, identity, isNil, ifElse, replace, invoker, isEmpty,
-        always } = require('ramda')
+        always, propOr } = require('ramda')
 
 const parseTime = ifElse(
   isNil,
@@ -43,9 +43,10 @@ const columnToKey = {
   'Pris': 'price',
   'Valuta': 'currency',
   'Handelsplats': 'market',
-  'Status': 'status'
+  'Status': 'status',
 }
-const headerToKey = prop(__, columnToKey)
+// skip columns we havent declared explicitly
+const headerToKey = propOr(false, __, columnToKey)
 const headerToKeys = map(headerToKey)
 
 const parseRecord = pipe(
@@ -63,7 +64,6 @@ const parseRecord = pipe(
 )
 
 function transformer(record, callback) {
-  console.log(record)
   callback(null, parseRecord(record))
 }
 
@@ -91,7 +91,8 @@ function parseCsv() {
   return parse({ 
     delimiter: ';',
     from: 1,
-    columns: headerToKeys 
+    columns: headerToKeys,
+    trim: true
   })
 }
 

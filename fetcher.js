@@ -1,6 +1,6 @@
 const qs = require('querystring')
 const https = require('https')
-const parseCsv = require('./parser')
+const { parseCsv, parseRecords } = require('./parser')
 
 // (String, [String]) -> Promise(Object[])
 function getEntries (from, to=null) {
@@ -22,17 +22,11 @@ function getEntries (from, to=null) {
     https.get(url, function(response) {
       response
         .setEncoding('ucs2') // works for utf-16 encoding of input
-        .pipe(
-            parse({ 
-              delimiter: ';',
-              from: 1,
-              columns: headerToKeys 
-            })
-          )
-
-
+        .pipe(parseCsv())
+        .pipe(parseRecords())
+        .on('data', d => entries.push(d))
         .on('error', reject)
-        .on('end', resolve)
+        .on('end', () => resolve(entries))
     })
   })
 }
