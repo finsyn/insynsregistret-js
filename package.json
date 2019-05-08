@@ -12,7 +12,8 @@
     "csv-parse": "~1.2.2",
     "http": "0.0.0",
     "querystring": "~0.2.0",
-    "ramda": "~0.24.1"
+    "ramda": "~0.24.1",
+    "stream-transform": "^2.0.0"
   },
   "devDependencies": {
     "tap": "~10.7.0"
