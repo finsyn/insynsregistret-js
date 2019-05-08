@@ -13,7 +13,8 @@
     "http": "0.0.0",
     "querystring": "~0.2.0",
     "ramda": "~0.24.1",
-    "stream-transform": "^2.0.0"
+    "stream-transform": "^2.0.0",
+    "timezone": "^1.0.22"
   },
   "devDependencies": {
     "tap": "~10.7.0"

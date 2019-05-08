@@ -4,12 +4,15 @@ const stream = require('stream')
 const transform = require('stream-transform')
 const { constructN, evolve, prop, __, pipe, toLower, tap,
         map, identity, isNil, ifElse, replace, invoker, isEmpty,
-        always, propOr } = require('ramda')
+        always, propOr, multiply } = require('ramda')
+const tz = require('timezone')
+const seTz = tz(require('timezone/Europe/Stockholm'))(__, "Europe/Stockholm")
 
 const parseTime = ifElse(
   isNil,
   identity,
   pipe(
+    seTz,
     constructN(1, Date),
     invoker(0, 'toISOString')
   )
@@ -99,5 +102,6 @@ function parseCsv() {
 module.exports = {
   parseRecords,
   parseCsv,
-  headerToKeys
+  headerToKeys,
+  _parseTime: parseTime
 }

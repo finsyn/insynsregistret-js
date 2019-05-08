@@ -1,7 +1,7 @@
 const t = require('tap')
 const parse = require('csv-parse')
 const fs = require('fs')
-const { headerToKeys, parseRecords, parseCsv } = require('./parser')
+const { _parseTime, headerToKeys, parseRecords, parseCsv } = require('./parser')
 
 t.test(t => {
   let count = 0
@@ -22,4 +22,18 @@ t.test(t => {
       t.equals(count, 9)
       t.done()
     })
+})
+
+t.test(t => {
+  const seTime = '2019-05-08 17:22:06'
+  const utcTime = _parseTime(seTime)
+  t.equals(utcTime, '2019-05-08T15:22:06.000Z')
+  t.done()
+})
+
+t.test(t => {
+  const seTime = '2019-02-08 17:22:06'
+  const utcTime = _parseTime(seTime)
+  t.equals(utcTime, '2019-02-08T16:22:06.000Z')
+  t.done()
 })
