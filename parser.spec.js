@@ -11,11 +11,12 @@ t.test(t => {
     .on('data', d => {
       const olderDate = new Date('2019-01-01')
       t.type(d, 'object')
-      t.type(d['transaction_type'], 'string')
-      t.ok(new Date(d['published_at']) > olderDate) 
-      t.ok(new Date(d['created_at']) > olderDate) 
+      t.type(d['transactionType'], 'string')
+      t.ok(new Date(d['publishedAt']) > olderDate) 
+      t.ok(new Date(d['createdAt']) > olderDate) 
       t.ok(/[A-Z0-9]{20}/.test(d['lei']))
       t.equals(d['currency'], 'SEK')
+      t.equals(d['instrumentType'], 'SubscriptionWarrant')
       count += 1
     })
     .on('end', () => {

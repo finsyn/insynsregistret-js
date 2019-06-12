@@ -7,6 +7,7 @@ const { constructN, evolve, prop, __, pipe, toLower, tap,
   always, propOr, multiply, split } = require('ramda')
 const tz = require('timezone')
 const seTz = tz(require('timezone/Europe/Stockholm'))(__, "Europe/Stockholm")
+const instrumentTypes = require('./instrument-types')
 
 const parseTime = ifElse(
   isNil,
@@ -27,7 +28,7 @@ const emptyToNull = ifElse(
 )
 
 const columnToKey = {
-  'Publication date': 'published_at',
+  'Publication date': 'publishedAt',
   'Issuer': 'publisher',
   'LEI-code': 'lei',
   'Notifier': 'responsible',
@@ -35,16 +36,17 @@ const columnToKey = {
   'Position': 'title',
   'Closely associated': 'relative',
   'Amendment': 'correction',
-  'Details of amendment': 'correction_reason',
-  'Initial notification': 'first_report',
-  'Linked to share option programme': 'shares_program_connection',
-  'Nature of transaction': 'transaction_type',
-  'Instrument type': 'instrument_type',
+  'Details of amendment': 'correctionReason',
+  'Initial notification': 'firstReport',
+  'Linked to share option programme': 'sharesProgramConnection',
+  'Nature of transaction': 'transactionType',
+  // this is actually misspelled, will email them
+  'Intrument type': 'instrumentType',
   'Instrument name': 'instrument',
   'ISIN': 'isin',
-  'Transaction date': 'created_at',
+  'Transaction date': 'createdAt',
   'Volume': 'volume',
-  'Unit': 'volume_unit',
+  'Unit': 'volumeUnit',
   'Price': 'price',
   'Currency': 'currency',
   'Trading venue': 'market',
@@ -57,14 +59,15 @@ const headerToKeys = map(headerToKey)
 const parseRecord = pipe(
   map(emptyToNull),
   evolve({
-    published_at: parseTime,
+    publishedAt: parseTime,
     relative: enToBool,
-    created_at: parseTime,
+    createdAt: parseTime,
     correction: enToBool,
-    first_report: enToBool,
-    shares_program_connection: enToBool,
+    firstReport: enToBool,
+    sharesProgramConnection: enToBool,
     volume: replace(/,/g, '.'),
-    price: replace(/,/g, '.')
+    price: replace(/,/g, '.'),
+    instrumentType: propOr('Unknown', __, instrumentTypes)
   })
 )
 
