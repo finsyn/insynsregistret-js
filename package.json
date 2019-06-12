@@ -18,5 +18,6 @@
   },
   "devDependencies": {
     "tap": "~10.7.0"
-  }
+  },
+  "keywords": ["insynsregistret", "insider-transactions", "finansinspektionen", "pdmr"]
 }
