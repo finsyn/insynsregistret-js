@@ -3,8 +3,8 @@ const { Transform } = require('stream')
 const stream = require('stream')
 const transform = require('stream-transform')
 const { constructN, evolve, prop, __, pipe, toLower, tap,
-        map, identity, isNil, ifElse, replace, invoker, isEmpty,
-        always, propOr, multiply } = require('ramda')
+  map, identity, isNil, ifElse, replace, invoker, isEmpty,
+  always, propOr, multiply, split } = require('ramda')
 const tz = require('timezone')
 const seTz = tz(require('timezone/Europe/Stockholm'))(__, "Europe/Stockholm")
 
@@ -12,6 +12,8 @@ const parseTime = ifElse(
   isNil,
   identity,
   pipe(
+    split(' '),
+    ([date, time]) => `${date.split('/').reverse().join('-')}T${time}`,
     seTz,
     constructN(1, Date),
     invoker(0, 'toISOString')
@@ -25,27 +27,27 @@ const emptyToNull = ifElse(
 )
 
 const columnToKey = {
-  'Publiceringsdatum': 'published_at',
-  'Utgivare': 'publisher',
-  'LEI-kod': 'lei',
-  'Anmälningsskyldig': 'responsible',
-  'Person i ledande ställning': 'person',
-  'Befattning': 'title',
-  'Närstående': 'relative',
-  'Korrigering': 'correction',
-  'Beskrivning av korrigering': 'correction_reason',
-  'Är förstagångsrapportering': 'first_report',
-  'Är kopplad till aktieprogram': 'shares_program_connection',
-  'Karaktär': 'transaction_type',
-  'Instrumenttyp': 'instrument_type',
-  'Instrumentnamn': 'instrument',
+  'Publication date': 'published_at',
+  'Issuer': 'publisher',
+  'LEI-code': 'lei',
+  'Notifier': 'responsible',
+  'Person discharging managerial responsibilities': 'person',
+  'Position': 'title',
+  'Closely associated': 'relative',
+  'Amendment': 'correction',
+  'Details of amendment': 'correction_reason',
+  'Initial notification': 'first_report',
+  'Linked to share option programme': 'shares_program_connection',
+  'Nature of transaction': 'transaction_type',
+  'Instrument type': 'instrument_type',
+  'Instrument name': 'instrument',
   'ISIN': 'isin',
-  'Transaktionsdatum': 'created_at',
-  'Volym': 'volume',
-  'Volymsenhet': 'volume_unit',
-  'Pris': 'price',
-  'Valuta': 'currency',
-  'Handelsplats': 'market',
+  'Transaction date': 'created_at',
+  'Volume': 'volume',
+  'Unit': 'volume_unit',
+  'Price': 'price',
+  'Currency': 'currency',
+  'Trading venue': 'market',
   'Status': 'status',
 }
 // skip columns we havent declared explicitly
@@ -56,11 +58,11 @@ const parseRecord = pipe(
   map(emptyToNull),
   evolve({
     published_at: parseTime,
-    relative: seToBool,
+    relative: enToBool,
     created_at: parseTime,
-    correction: seToBool,
-    first_report: seToBool,
-    shares_program_connection: seToBool,
+    correction: enToBool,
+    first_report: enToBool,
+    shares_program_connection: enToBool,
     volume: replace(/,/g, '.'),
     price: replace(/,/g, '.')
   })
@@ -70,11 +72,11 @@ function transformer(record, callback) {
   callback(null, parseRecord(record))
 }
 
-function seToBool (val) {
+function enToBool (val) {
   switch(val) {
-    case 'Ja':
+    case 'Yes':
       return true;
-    case 'Nej':
+    case 'No':
       return false;
     default:
       return val;

@@ -15,7 +15,7 @@ function getEntries (from, to=null) {
 
   const queryString = qs.stringify(params)
 
-  const url = `https://marknadssok.fi.se/publiceringsklient/sv-SE/Search/Search?${queryString}`
+  const url = `https://marknadssok.fi.se/publiceringsklient/en-GB/Search/Search?${queryString}`
 
   const entries = []
   return new Promise((resolve, reject) => {

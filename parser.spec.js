@@ -19,7 +19,7 @@ t.test(t => {
       count += 1
     })
     .on('end', () => {
-      t.equals(count, 9)
+      t.equals(count, 3)
       t.done()
     })
 })

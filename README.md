@@ -31,15 +31,15 @@ ir('2017-01-10')
 //     correction_reason: null,
 //     first_report: true,
 //     shares_program_connection: null,
-//     transaction_type: 'Förvärv',
+//     transaction_type: 'Acquisition',
 //     instrument: 'Företag B',
 //     isin: 'SE0007439442',
-//     volume_unit: 'Antal',
+//     volume_unit: 'Quantity',
 //     volume: '7400',
 //     price: '67.5',
 //     currency: 'SEK',
 //     market: 'EXEMPELMARKNAD',
-//     status: 'Aktuell' },
+//     status: 'Current' },
 //     ...
 // ]
 
