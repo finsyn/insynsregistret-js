@@ -19,18 +19,18 @@ const ir = require('insynsregistret')
 ir('2017-01-10')
 .then(console.log)
 
-// [ { publishedAt: '2017-09-10T18:27:58.000Z',
+// [ { publishedAt: 2017-09-10T18:27:58.000Z,
 //     publisher: 'Företag AB',
 //     lei: '549300I1FSPPU9HHU419',
 //     responsible: 'Sverre Svansson',
 //     person: 'Sven Svensson',
 //     title: 'Styrelseordförande',
 //     relative: true,
-//     createdAt: '2017-09-06T22:00:00.000Z',
-//     correction: null,
-//     correction_reason: null,
+//     createdAt: 2017-09-06T22:00:00.000Z,
+//     correction: false,
+//     correction_reason: false,
 //     firstReport: true,
-//     sharesProgramConnection: null,
+//     sharesProgramConnection: false,
 //     transactionType: 'Acquisition',
 //     instrument: 'Företag B',
 //     instrumentType: 'Share',

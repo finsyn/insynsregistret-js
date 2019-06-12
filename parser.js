@@ -16,8 +16,7 @@ const parseTime = ifElse(
     split(' '),
     ([date, time]) => `${date.split('/').reverse().join('-')}T${time}`,
     seTz,
-    constructN(1, Date),
-    invoker(0, 'toISOString')
+    constructN(1, Date)
   )
 )
 
@@ -79,10 +78,9 @@ function enToBool (val) {
   switch(val) {
     case 'Yes':
       return true;
-    case 'No':
-      return false;
+    // null implies false
     default:
-      return val;
+      return false
   }
 }
 

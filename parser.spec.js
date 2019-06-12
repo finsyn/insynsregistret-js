@@ -12,8 +12,8 @@ t.test(t => {
       const olderDate = new Date('2019-01-01')
       t.type(d, 'object')
       t.type(d['transactionType'], 'string')
-      t.ok(new Date(d['publishedAt']) > olderDate) 
-      t.ok(new Date(d['createdAt']) > olderDate) 
+      t.ok(d['publishedAt'] > olderDate)
+      t.ok(d['createdAt'] > olderDate)
       t.ok(/[A-Z0-9]{20}/.test(d['lei']))
       t.equals(d['currency'], 'SEK')
       t.equals(d['instrumentType'], 'SubscriptionWarrant')
@@ -26,15 +26,15 @@ t.test(t => {
 })
 
 t.test(t => {
-  const seTime = '2019-05-08 17:22:06'
-  const utcTime = _parseTime(seTime)
+  const seTime = '08/05/2019 17:22:06'
+  const utcTime = _parseTime(seTime).toISOString()
   t.equals(utcTime, '2019-05-08T15:22:06.000Z')
   t.done()
 })
 
 t.test(t => {
-  const seTime = '2019-02-08 17:22:06'
-  const utcTime = _parseTime(seTime)
+  const seTime = '08/02/2019 17:22:06'
+  const utcTime = _parseTime(seTime).toISOString()
   t.equals(utcTime, '2019-02-08T16:22:06.000Z')
   t.done()
 })
