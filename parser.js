@@ -29,15 +29,15 @@ const emptyToNull = ifElse(
 const columnToKey = {
   'Publication date': 'publishedAt',
   'Issuer': 'publisher',
-  'LEI-code': 'lei',
+  'LEI-code': 'publisherLei',
   'Notifier': 'responsible',
   'Person discharging managerial responsibilities': 'person',
   'Position': 'title',
-  'Closely associated': 'relative',
-  'Amendment': 'correction',
+  'Closely associated': 'isAssociated',
+  'Amendment': 'isCorrection',
   'Details of amendment': 'correctionReason',
-  'Initial notification': 'firstReport',
-  'Linked to share option programme': 'sharesProgramConnection',
+  'Initial notification': 'isFirstReport',
+  'Linked to share option programme': 'isSharesProgramConnected',
   'Nature of transaction': 'transactionType',
   // this is actually misspelled, will email them
   'Intrument type': 'instrumentType',
@@ -59,13 +59,12 @@ const parseRecord = pipe(
   map(emptyToNull),
   evolve({
     publishedAt: parseTime,
-    relative: enToBool,
+    isAssociated: enToBool,
     createdAt: parseTime,
-    correction: enToBool,
-    firstReport: enToBool,
-    sharesProgramConnection: enToBool,
+    isCorrection: enToBool,
+    isFirstReport: enToBool,
+    isSharesProgramConnection: enToBool,
     volume: replace(/,/g, '.'),
-    price: replace(/,/g, '.'),
     instrumentType: propOr('Unknown', __, instrumentTypes)
   })
 )
