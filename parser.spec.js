@@ -13,7 +13,7 @@ t.test(t => {
       t.type(d, 'object')
       t.type(d['transactionType'], 'string')
       t.ok(d['publishedAt'] > olderDate)
-      t.ok(d['createdAt'] > olderDate)
+      t.ok(d['transactionAt'] > olderDate)
       t.ok(/[A-Z0-9]{20}/.test(d['publisherLei']))
       t.equals(d['currency'], 'SEK')
       t.equals(d['instrumentType'], 'SubscriptionWarrant')

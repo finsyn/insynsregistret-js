@@ -43,7 +43,7 @@ const columnToKey = {
   'Intrument type': 'instrumentType',
   'Instrument name': 'instrument',
   'ISIN': 'isin',
-  'Transaction date': 'createdAt',
+  'Transaction date': 'transactionAt',
   'Volume': 'volume',
   'Unit': 'volumeUnit',
   'Price': 'price',
@@ -60,7 +60,7 @@ const parseRecord = pipe(
   evolve({
     publishedAt: parseTime,
     isAssociated: enToBool,
-    createdAt: parseTime,
+    transactionAt: parseTime,
     isCorrection: enToBool,
     isFirstReport: enToBool,
     isSharesProgramConnection: enToBool,
