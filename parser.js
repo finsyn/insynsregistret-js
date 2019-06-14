@@ -3,18 +3,20 @@ const { Transform } = require('stream')
 const stream = require('stream')
 const transform = require('stream-transform')
 const { constructN, evolve, prop, __, pipe, toLower, tap,
-        map, identity, isNil, ifElse, replace, invoker, isEmpty,
-        always, propOr, multiply } = require('ramda')
+  map, identity, isNil, ifElse, replace, invoker, isEmpty,
+  always, propOr, multiply, split } = require('ramda')
 const tz = require('timezone')
 const seTz = tz(require('timezone/Europe/Stockholm'))(__, "Europe/Stockholm")
+const instrumentTypes = require('./instrument-types')
 
 const parseTime = ifElse(
   isNil,
   identity,
   pipe(
+    split(' '),
+    ([date, time]) => `${date.split('/').reverse().join('-')}T${time}`,
     seTz,
-    constructN(1, Date),
-    invoker(0, 'toISOString')
+    constructN(1, Date)
   )
 )
 
@@ -25,27 +27,28 @@ const emptyToNull = ifElse(
 )
 
 const columnToKey = {
-  'Publiceringsdatum': 'published_at',
-  'Utgivare': 'publisher',
-  'LEI-kod': 'lei',
-  'Anmälningsskyldig': 'responsible',
-  'Person i ledande ställning': 'person',
-  'Befattning': 'title',
-  'Närstående': 'relative',
-  'Korrigering': 'correction',
-  'Beskrivning av korrigering': 'correction_reason',
-  'Är förstagångsrapportering': 'first_report',
-  'Är kopplad till aktieprogram': 'shares_program_connection',
-  'Karaktär': 'transaction_type',
-  'Instrumenttyp': 'instrument_type',
-  'Instrumentnamn': 'instrument',
+  'Publication date': 'publishedAt',
+  'Issuer': 'publisher',
+  'LEI-code': 'publisherLei',
+  'Notifier': 'responsible',
+  'Person discharging managerial responsibilities': 'person',
+  'Position': 'title',
+  'Closely associated': 'isAssociated',
+  'Amendment': 'isCorrection',
+  'Details of amendment': 'correctionReason',
+  'Initial notification': 'isFirstReport',
+  'Linked to share option programme': 'isSharesProgramConnected',
+  'Nature of transaction': 'transactionType',
+  // this is actually misspelled, will email them
+  'Intrument type': 'instrumentType',
+  'Instrument name': 'instrument',
   'ISIN': 'isin',
-  'Transaktionsdatum': 'created_at',
-  'Volym': 'volume',
-  'Volymsenhet': 'volume_unit',
-  'Pris': 'price',
-  'Valuta': 'currency',
-  'Handelsplats': 'market',
+  'Transaction date': 'transactionAt',
+  'Volume': 'volume',
+  'Unit': 'volumeUnit',
+  'Price': 'price',
+  'Currency': 'currency',
+  'Trading venue': 'market',
   'Status': 'status',
 }
 // skip columns we havent declared explicitly
@@ -55,14 +58,14 @@ const headerToKeys = map(headerToKey)
 const parseRecord = pipe(
   map(emptyToNull),
   evolve({
-    published_at: parseTime,
-    relative: seToBool,
-    created_at: parseTime,
-    correction: seToBool,
-    first_report: seToBool,
-    shares_program_connection: seToBool,
+    publishedAt: parseTime,
+    isAssociated: enToBool,
+    transactionAt: parseTime,
+    isCorrection: enToBool,
+    isFirstReport: enToBool,
+    isSharesProgramConnection: enToBool,
     volume: replace(/,/g, '.'),
-    price: replace(/,/g, '.')
+    instrumentType: propOr('Unknown', __, instrumentTypes)
   })
 )
 
@@ -70,14 +73,13 @@ function transformer(record, callback) {
   callback(null, parseRecord(record))
 }
 
-function seToBool (val) {
+function enToBool (val) {
   switch(val) {
-    case 'Ja':
+    case 'Yes':
       return true;
-    case 'Nej':
-      return false;
+    // null implies false
     default:
-      return val;
+      return false
   }
 }
 

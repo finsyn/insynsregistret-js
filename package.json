@@ -1,6 +1,6 @@
 {
   "name": "insynsregistret",
-  "version": "0.2.2-0",
+  "version": "1.0.0-4",
   "description": "Get the latest insider transactions published at FinansInspektionen",
   "main": "index.js",
   "scripts": {
@@ -18,5 +18,11 @@
   },
   "devDependencies": {
     "tap": "~10.7.0"
-  }
+  },
+  "keywords": [
+    "insynsregistret",
+    "insider-transactions",
+    "finansinspektionen",
+    "pdmr"
+  ]
 }
