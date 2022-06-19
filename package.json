@@ -9,7 +9,7 @@
   "author": "tornilssonohrn@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "csv-parse": "~1.2.2",
+    "csv-parse": "~4.6.5",
     "http": "0.0.0",
     "querystring": "~0.2.0",
     "ramda": "~0.24.1",
